@@ -48,6 +48,7 @@ bool SUrlParser::parse(const char *uri) {
                     m_folders.push_back(s);
                 } else if ( t == Type::param ) {
                     m_keysvalues[s] = "";
+                    last_param = s;
                 }
                 s.clear();
             } else if ( *c == '\0' && s.length() == 0 ) {
@@ -60,6 +61,10 @@ bool SUrlParser::parse(const char *uri) {
             }
         } while ( *c++ != '\0' );
     }
+#if defined(TESTS)
+    std:cout << "Passed URL: " << uri << std::endl;
+    print();
+#endif
     return true;
 }
 
@@ -69,7 +74,7 @@ KeyValueMap_t &SUrlParser::args() {
 
 void SUrlParser::print(char splitter) {
     std::cout << std::endl;
-    std::cout << "Total " << m_folders.size() << " m_folders, see below, if any" << std::endl;
+    std::cout << "Total " << m_folders.size() << " folders, see below (if any)" << std::endl;
     for ( const auto &n : m_folders ) {
         std::cout << " - " << n << std::endl;
     }
