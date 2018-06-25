@@ -15,10 +15,12 @@ class SUrlParser {
         KeyValueMap_t m_keysvalues;
         Folder_t m_folders;
     public:
+        SUrlParser() {};
+        SUrlParser(const char *url);
         bool parse(const char *url);
         Folder_t &paths() { return m_folders; };
         KeyValueMap_t &params() { return m_keysvalues; };
-        KeyValueMap_t &args();
+        string path();
         void print(char splitter='\n');
 };
 

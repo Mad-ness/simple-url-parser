@@ -1,19 +1,62 @@
 #include <string>
+#include <iostream>
 #include <cassert>
 #include "surlparser.h"
 
 using namespace std;
 
+void testall();
+void testpath();
+bool test(const char *path, const char *compare_to);
+
+bool test(const char *path, const char *compare_to);
+
 int main(int argc, char **argv) {
+    testall();
+    testpath();
+    return 0;
+}
 
-    SUrlParser m;
+void testpath() {
 
-    if ( argc > 1 ) {
-        m.parse(argv[1]);
-        m.print();
-        return 0;
+    assert( test( "/test", "/test" ));
+    assert( test( "///test", "/test" ));
+    assert( test( "///test//////", "/test" ));
+    assert( test( "test", "/test" ));
+    assert( test( "test", "/test" ));
+    assert( test( "test/", "/test" ));
+    assert( test( "test////", "/test" ));
+
+    assert( test( "/device/ping", "/device/ping" ));
+    assert( test( "///device/////ping", "/device/ping" ));
+    assert( test( "device/ping////", "/device/ping" ));
+    assert( test( "/device/ping", "/device/ping" ));
+    assert( test( "/device/ping", "/device/ping" ));
+
+    assert( test( "/device/ping?youre=mine", "/device/ping" ));
+    assert( test( "device/ping?youre=mine", "/device/ping" ));
+    assert( test( "device/ping/?youre=mine", "/device/ping" ));
+    assert( test( "device/ping/?youre=mine&me=isyoure", "/device/ping" ));
+    assert( test( "////device/////ping//////?youre=mine&and&I=youers", "/device/ping" ));
+}
+
+bool test(const char *path, const char *compare_to) {
+    bool result = false;
+    SUrlParser p;
+    p.parse(path);
+    std::cout << "Test path: [" << path << "] ... ";
+    string s = p.path();
+    if ( s == string(compare_to) ) {
+        std::cout << "GOOD, " << s << std::endl;
+        result = true;
+    } else {
+        std::cout << "BAD, " << s << std::endl << std::endl;
     }
+    return result;
+}
 
+void testall() {
+    SUrlParser m;
     m.parse("/one/two/three");
     assert( m.paths().size() == 3 && m.params().size() == 0 );
     m.parse("//one/two/three");
@@ -86,7 +129,5 @@ int main(int argc, char **argv) {
     m.parse("one/two/three/////");
     assert( m.paths().size() == 3 && m.params().size() == 0 );
 
-
-    return 0;
 }
 
