@@ -16,6 +16,3 @@ surlparser_tests.o: surlparser.h surlparser.cpp
 clean:
 	rm -f test example surlparser.o
 
-
-
-
