@@ -22,7 +22,7 @@ bool SUrlParser::parse(const char *uri) {
                 }
                 t = Type::folder;
             } else if ( *c == '?' && ( t == Type::folder || t == Type::begin )) {
-                if ( s.length() > 0 && s.length() > 0 ) {
+                if ( s.length() > 0 ) {
                     m_folders.push_back(s);
                     s.clear();
                 }
