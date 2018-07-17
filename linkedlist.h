@@ -8,8 +8,8 @@
 void copystr( char *dest, const char *src );
 
 struct LinkedListItem {
-    char *key;
-    char *value;
+    char key[16];
+    char value[16];
     LinkedListItem *next;
     bool isLast() { return ( next == NULL ); };
     void print() {
@@ -19,9 +19,9 @@ struct LinkedListItem {
     LinkedListItem(LinkedListItem &src) {
         *this = src;
     };
-    LinkedListItem( const char *key, const char *value ) {
-        copystr( this->key, key );
-        copystr( this->value, value );
+    LinkedListItem( const char *_key, const char *_value ) {
+        copystr( this->key, _key );
+        copystr( this->value, _value );
     };
     LinkedListItem &operator=(const LinkedListItem &src) {
         copystr( this->key, src.key );
@@ -40,8 +40,9 @@ class LinkedList {
         LinkedList();
         ~LinkedList();
         int size();
-        LinkedListItem *first();
-        LinkedListItem *last();
+        LinkedListItem& first();
+        LinkedListItem& last();
+        LinkedListItem& at(const int index);
         void add( LinkedListItem *item );
         void add( const char *key, const char *value );
         void printContent();
